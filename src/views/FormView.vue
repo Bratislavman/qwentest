@@ -3,7 +3,7 @@
     <h1 class="text-3xl font-bold">Форма (Vueform)</h1>
 
     <div class="bg-white p-6 rounded-lg shadow">
-      <Vueform @submit="handleSubmit">
+      <Vueform v-model="submittedData" @submit="handleSubmit" :endpoint="false">
         <TextElement
           name="name"
           label="Имя"
@@ -27,13 +27,8 @@
           placeholder="Расскажите о себе..."
         />
 
-        <ButtonElement name="submit" button-label="Отправить" button-type="submit" />
+        <ButtonElement name="submit" button-label="Отправить" button-type="submit" submits />
       </Vueform>
-
-      <div v-if="submittedData" class="mt-6 p-4 bg-green-100 rounded-lg">
-        <h3 class="font-semibold mb-2">Отправленные данные:</h3>
-        <pre class="text-sm">{{ JSON.stringify(submittedData, null, 2) }}</pre>
-      </div>
     </div>
   </div>
 </template>
@@ -47,9 +42,19 @@ const roles = [
   { value: 'moderator', label: 'Модератор' },
 ]
 
-const submittedData = ref<any>(null)
+const formData = {
+  name: '',
+  email: '',
+  bio: '',
+}
 
-const handleSubmit = (data: any) => {
-  submittedData.value = data
+type FormDataType = typeof formData
+
+const submittedData = ref<FormDataType | undefined>({
+  ...formData,
+})
+
+const handleSubmit = () => {
+  console.log(submittedData.value, 'result')
 }
 </script>
